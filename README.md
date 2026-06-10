@@ -1,2 +1,4 @@
-# ecommerce-order-intelligence
-End-to-end e-commerce analytics platform for processing order data and generating insights on sales, customers, and product performance.
+## E-Commerce Order Intelligence Platform
+Azure Data pipeline using ADF, Databricks, Delta Lake & Microsoft Fabric.
+**Stack:** ADF · ADLS Gen2 · Databricks · PySpark · Delta Lake · Power BI
+**Dataset:** Brazilian E-Commerce (Olist) — 100k+ real orders

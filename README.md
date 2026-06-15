@@ -2,3 +2,44 @@
 Azure Data pipeline using ADF, Databricks, Delta Lake & Microsoft Fabric.
 **Stack:** ADF · ADLS Gen2 · Databricks · PySpark · Delta Lake · Power BI
 **Dataset:** Brazilian E-Commerce (Olist) — 100k+ real orders
+
+## Architecture
+![Architecture](docs/architecture_phase1.png)
+
+## Dataset
+Brazilian E-Commerce Public Dataset by Olist. 9 tables, ~100k orders, 2016–2018. Source: Kaggle
+
+## How to Run
+### Prerequisites
+- Azure subscription (free tier works)
+- Azure Data Factory instance
+- Azure Data Lake Storage Gen2 account with containers: 'raw', 'bronze', 'silver', 'gold'
+- [Brazilian E-Commerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) downloaded from Kaggle
+
+### Step 1 — Create Azure resource
+In Azure Portal, create a resource group. Inside it, create ADLS Gen2 storage account with hierarchical namespace ON.
+
+
+### Step 2 — Upload raw data
+Upload all 9 CSV files from the Kaggle dataset into:
+
+ADLS: raw/olist/
+
+
+### Step 3 — Configure ADF Linked Service
+In ADF Studio -> Manage -> Linked Services -> create a linked service
+to your ADLS Gen2 account named 'ls_adls_ecommerce'.
+
+### Step 4 — Run the ingestion pipeline
+In ADF Studio -> Author -> Pipelines -> 'pl_raw_to_bronze' -> create 9 Copy Activity to convert CSV to Parquet -> click **Trigger Now**.
+
+This runs 9 parallel Copy Activities that convert all CSV files to Parquet format with Snappy compression and land them in:
+
+ADLS: bronze/olist/<table_name>/
+
+
+### Known Data Quality Issues
+Filename: 'olist_order_reviews_dataset.csv'
+Issue: Contains embedded newlines ('\n') inside 'review_comment_message' field (3,852 affected rows).  
+Resolution: Handled via ADF fault tolerance — incompatible rows are skipped and logged to 'raw/olist/logs/'. Full data recovered in Silver layer using PySpark 'multiLine=True'.
+

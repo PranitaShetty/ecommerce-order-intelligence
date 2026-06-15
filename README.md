@@ -4,7 +4,7 @@ Azure Data pipeline using ADF, Databricks, Delta Lake & Microsoft Fabric.
 **Dataset:** Brazilian E-Commerce (Olist) — 100k+ real orders
 
 ## Architecture
-![Architecture](docs/architecture_phase1.png)
+![Architecture](docs/Architecture_phase1.png)
 
 ## Dataset
 Brazilian E-Commerce Public Dataset by Olist. 9 tables, ~100k orders, 2016–2018. Source: Kaggle

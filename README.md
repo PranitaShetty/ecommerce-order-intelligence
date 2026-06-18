@@ -43,3 +43,16 @@ Filename: 'olist_order_reviews_dataset.csv'
 Issue: Contains embedded newlines ('\n') inside 'review_comment_message' field (3,852 affected rows).  
 Resolution: Handled via ADF fault tolerance — incompatible rows are skipped and logged to 'raw/olist/logs/'. Full data recovered in Silver layer using PySpark 'multiLine=True'.
 
+## Notebooks
+| Notebook | Layer | Description |
+|---|---|---|
+| 00_mount_adls | Setup | Mounts ADLS Gen2 containers to Databricks |
+| 01_bronze_to_delta | Bronze | Converts Parquet files to Delta format |
+| 02_silver_cleaning | Silver | Cleans nulls, fixes types, deduplicates, recovers order_reviews |
+| 03_gold_aggregations | Gold | Builds revenue_by_category and orders_by_state tables |
+
+## Key Findings
+- Total platform revenue: $13.5M across 2016-2018
+- Top state by orders: SP (Sao Paulo) with ~41% of all orders
+- Top category: health_beauty
+- order_reviews: PySpark recovered 99,224 rows vs ADF's partial read
